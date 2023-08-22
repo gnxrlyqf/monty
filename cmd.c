@@ -1,4 +1,5 @@
 #include "main.h"
+#include <unistd.h>
 #include <stdlib.h>
 
 char **cmd(char *buffer)
@@ -25,6 +26,11 @@ char **cmd(char *buffer)
 	i = 0;
 	while (buffer[space + 1] != '\0')
 	{
+		if(!(buffer[space + 1] >= '0' && buffer[space + 1] <= '9'))
+		{
+			write(STDERR_FILENO, "L<line_number>: usage: push integer\n", 36);
+			exit(EXIT_FAILURE);
+		}
 		cmd[1][i] = buffer[space + 1];
 		space++, i++;
 	}

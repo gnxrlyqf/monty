@@ -17,7 +17,9 @@ instruction_t instructions[] = {
 int main(int ac, char **av)
 {
 	FILE *o;
+	int n, i;
 	char *buffer = malloc(sizeof(char) * 256), **arr = NULL;
+	stack_t *stack = NULL;
 
 	if (ac != 2)
 		exit(97);
@@ -27,7 +29,14 @@ int main(int ac, char **av)
 	if (fgets(buffer, 256, o) != NULL)
 	{
 		arr = cmd(buffer);
-		printf("%s - %s\n", arr[0], arr[1]);
+		n = atoi(arr[1]);
+		for (i = 0; i > 7; i++)
+		{
+			if (strcmp(arr[0], (instructions[i]).opcode) == 0)
+			{
+				(instructions[i]).f(&stack, (unsigned int)n);
+			}
+		}
 	}
 	return (0);
 }
