@@ -63,18 +63,20 @@ int main(int ac, char **av)
 	FILE *fo;
 	size_t size = 256;
 	int num = 1;
-	char *buffer = malloc(sizeof(char) * 256), **arr = NULL, *read;
+	char *buffer = malloc(sizeof(char) * 256), **arr = NULL;
 	stack_t *stack = NULL;
 
 	memset(buffer, '\0', 256);
 	fo = openfile(ac, av, buffer);
-	read = fgets(buffer, size, fo);
-	while (read)
+	while (fgets(buffer, size, fo))
 	{
-		if (strcmp("\n", read) == 0)
+		if (strcmp("\n", buffer) == 0)
+		{
+			num++;
 			continue;
+		}
 		arr = cmd(buffer);
-		exec(arr, stack, num);
+		exec(arr, &stack, num);
 		memset(buffer, '\0', 256);
 		num++;
 	}

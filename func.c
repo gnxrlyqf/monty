@@ -4,6 +4,33 @@
 #include <string.h>
 #include <stdlib.h>
 
+/**
+ * is_number - check the string is number
+ * @s: string
+ * Return: 1if is number or 0 if not
+*/
+
+int is_number(char *s)
+{
+	int i = 0;
+
+	while (*(s + i))
+	{
+		if (*(s + i) <= 57 && *(s + i) >= 48)
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
+
+/**
+ * cmd - creates command out of buffer
+ * @buffer: text to convert
+ *
+ * Return: array of strings with command and number
+*/
+
 char **cmd(char *buffer)
 {
 	int i, size;
@@ -16,7 +43,7 @@ char **cmd(char *buffer)
 	cmd[0] = strtok(buffer, " \0\n");
 	if (!cmd[0])
 		return (NULL);
-	if (cmd[0][strlen(cmd[0]) - 1] == '\n')
+	if (strlen(cmd[0]) == (unsigned long int)size)
 	{
 		cmd[0][size - 1] = '\0';
 		cmd[1] = NULL;
@@ -31,32 +58,37 @@ char **cmd(char *buffer)
 instruction_t instructions[] = {
 	{"push", push},
 	{"pall", pall},
-	/*{"pint", pint}
-	{"pop", pop},
-	{"swap", swap},
-	{"add", add},
-	{"nop", nop}*/
+	/*
+	* {"pint", pint}
+	* {"pop", pop},
+	* {"swap", swap},
+	* {"add", add},
+	* {"nop", nop}
+	*/
 };
 
-void exec(char **arr, stack_t *stack, int line_num)
+/**
+ * exec - executes an instruction
+ * @arr: instruction to execute
+ * @stack: pointer to pointer to the top of the stack
+ * @line_num: line number
+*/
+
+void exec(char **arr, stack_t **stack, int line_num)
 {
 	int i = 0, n, found = 0;
 
-	if (strcmp(arr[0], "push") == 0 && arr[1])
+	if (strcmp(arr[0], "push") == 0)
 	{
-		for(i = 0; (long unsigned int)i < strlen(arr[1]); i++)
-		{
-			if (!(arr[1][i] <= '9' && arr[1][i] >= '0'))
-				fprintf(stderr, "L%d: usage: push integer\n", line_num), exit(EXIT_FAILURE);
-		}
+		if (!arr[1] || is_number(arr[1]) != 1)
+			fprintf(stderr, "L%d: usage: push integer\n", line_num), exit(EXIT_FAILURE);
 		n = atoi(arr[1]);
 	}
 	for (i = 0; i < 2; i++)
 	{
-		if (strcmp(arr[0], (instructions[i]).opcode) == 0)
+		if (strcmp(arr[0], instructions[i].opcode) == 0)
 		{
-			printf("%s - %s\n", arr[0], instructions[i].opcode);
-			(instructions[i]).f(&stack, (unsigned int)n);
+			(instructions[i]).f(stack, (unsigned int)n);
 			found = 1;
 			break;
 		}

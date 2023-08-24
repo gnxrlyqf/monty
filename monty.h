@@ -39,6 +39,7 @@ void pint(stack_t **stack, unsigned int line_number);
  * Description: opcode and its function
  * for stack, queues, LIFO, FIFO
  */
+
 typedef struct instruction_s
 {
 	char *opcode;
@@ -46,6 +47,6 @@ typedef struct instruction_s
 } instruction_t;
 
 char **cmd(char *buffer);
-void exec(char **arr, stack_t *stack, int line_num);
+void exec(char **arr, stack_t **stack, int line_num);
 
 #endif
