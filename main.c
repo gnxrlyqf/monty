@@ -40,7 +40,7 @@ void free_stack(stack_t *head)
  * Return: file
  */
 
-FILE openfile(int ac, char **av)
+FILE *openfile(int ac, char **av, char *buffer)
 {
 	FILE *o;
 
@@ -74,7 +74,7 @@ int main(int ac, char **av)
 	char *buffer = malloc(sizeof(char) * 256), **arr = NULL, *read;
 	stack_t *stack = NULL;
 
-	fo = openfile(ac, av);
+	fo = openfile(ac, av, buffer);
 	read = fgets(buffer, size, fo);
 	while (read)
 	{
