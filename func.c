@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
 
 /**
  * is_number - check the string is number
@@ -34,27 +33,19 @@ int is_number(char *s)
 
 char **cmd(char *buffer)
 {
-	int i, size;
+	int i = 0;
 	char **cmd = malloc(sizeof(char *) * 2);
 
-	i = 0;
 	while (buffer[i] != '\0')
 		i++;
-	size = i;
+	/*size = i;*/
 	cmd[0] = strtok(buffer, " \0\n");
+	if (cmd[0][strlen(cmd[0]) - 1] == '\n')
+		cmd[0][strlen(cmd[0]) - 1] = '\0';
 	if (!cmd[0])
 		return (NULL);
-	if (strlen(cmd[0]) == (unsigned long int)size)
-	{
-		if (cmd[0][size - 1] == '\n')
-			cmd[0][size - 1] = '\0';
-		else
-			cmd[0][size] = '\0';
-		cmd[1] = NULL;
-		return (cmd);
-	}
 	cmd[1] = strtok(NULL, " \0\n");
-	if (cmd[1][strlen(cmd[1]) - 1] == '\n')
+	if (cmd[1] && cmd[1][strlen(cmd[1]) - 1] == '\n')
 		cmd[1][strlen(cmd[1]) - 1] = '\0';
 	return (cmd);
 }
