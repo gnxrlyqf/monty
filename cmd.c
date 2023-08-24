@@ -19,6 +19,11 @@ int is_number(char *s)
 	}
 	return (1);
 }
+/**
+ * cmd - split command in array
+ * @buffer: command line
+ * Return: split string
+ */
 
 char **cmd(char *buffer)
 {

@@ -1,4 +1,10 @@
 #include "monty.h"
+/**
+ * push - push fonction to insert new element in stack LIFO
+ * @stack: head stack
+ * @line_number: data n
+ * Return: nothing
+ */
 
 void push(stack_t **stack, unsigned int line_number)
 {
@@ -14,7 +20,7 @@ void push(stack_t **stack, unsigned int line_number)
 
 	if (!*stack)
 	{
-                elem->next = *stack;
+		elem->next = *stack;
 		elem->prev = NULL;
 		*stack = elem;
 	}
@@ -28,6 +34,12 @@ void push(stack_t **stack, unsigned int line_number)
 		temp->next = elem;
 	}
 }
+/**
+ * pall - pall fonction to display elements in stack LIFO
+ * @stack: head stack
+ * @line_number: void
+ * Return: nothing
+ */
 
 void pall(stack_t **stack, __attribute__((unused)) unsigned int line_number)
 {

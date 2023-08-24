@@ -33,6 +33,39 @@ void free_stack(stack_t *head)
 		}
 	}
 }
+/**
+ * openfile - open file if it's possible
+ * @ac: args number
+ * @av: array of args
+ * Return: file
+ */
+
+FILE openfile(int ac, char **av)
+{
+	FILE *o;
+
+	if (ac != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		free(buffer);
+		exit(EXIT_FAILURE);
+	}
+	o = fopen(av[1], "r");
+	if (!o)
+	{
+		free(buffer);
+		fprintf(stderr, "Error: Can't open file %s\n", av[1]);
+		exit(EXIT_FAILURE);
+	}
+	return (o);
+}
+/**
+ * main - main fonc
+ * @ac: args number
+ * @av: args array
+ * Return: 0
+ */
+
 int main(int ac, char **av)
 {
 	FILE *fo;
@@ -41,19 +74,7 @@ int main(int ac, char **av)
 	char *buffer = malloc(sizeof(char) * 256), **arr = NULL, *read;
 	stack_t *stack = NULL;
 
-	if (ac != 2)
-	{
-		fprintf(stderr, "USAGE: monty file\n");
-		free(buffer);
-		exit(EXIT_FAILURE);
-	}
-	fo = fopen(av[1], "r");
-	if (!fo)
-	{
-		free(buffer);
-		fprintf(stderr, "Error: Can't open file %s\n", av[1]);
-		exit(EXIT_FAILURE);
-	}
+	fo = openfile(ac, av);
 	read = fgets(buffer, size, fo);
 	while (read)
 	{
