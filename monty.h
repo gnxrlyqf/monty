@@ -1,6 +1,12 @@
-#ifndef MAIN_H
-#define MAIN_H
-
+#ifndef MONTY_H
+#define MONTY_H
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <string.h>
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer

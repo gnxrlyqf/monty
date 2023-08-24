@@ -1,38 +1,42 @@
-#include "main.h"
-#include <unistd.h>
-#include <stdlib.h>
+#include "monty.h"
+
+/**
+ * is_number - check the string is number
+ * @s: string
+ * Return: 1if is number or 0 if not
+ */
+
+int is_number(char *s)
+{
+	int i = 0;
+
+	while (*(s + i))
+	{
+		if (*(s + i) <= 57 && *(s + i) >= 48)
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
 
 char **cmd(char *buffer)
 {
-	int size, i, space;
-	char **cmd = malloc(sizeof(char *) * 2);
+	char *token;
+	int i = 0;
+	char **cmd = malloc(sizeof(char *) * 1024);
 
-	i = 0;
-	while (buffer[i] != '\0')
+	token = strtok(buffer, " \t\n");
+	while (token)
 	{
-		if (buffer[i] == ' ')
-			space = i;
+		cmd[i] = token;
 		i++;
+		token = strtok(NULL, " \t\n");
 	}
-	size = i;
-	cmd[0] = malloc(sizeof(char) * (space + 1));
-	cmd[1] = malloc(sizeof(char) * (size - space));
-	i = 0;
-	while (buffer[i] != ' ')
+	if (cmd[1] && !is_number(cmd[1]))
 	{
-		cmd[0][i] = buffer[i];
-		i++;
-	}
-	i = 0;
-	while (buffer[space + 1] != '\0')
-	{
-		if(!(buffer[space + 1] >= '0' && buffer[space + 1] <= '9'))
-		{
-			write(STDERR_FILENO, "L<line_number>: usage: push integer\n", 36);
-			exit(EXIT_FAILURE);
-		}
-		cmd[1][i] = buffer[space + 1];
-		space++, i++;
+		write(STDERR_FILENO, "L<line_number>: usage: push integer\n", 36);
+		exit(EXIT_FAILURE);
 	}
 	return (cmd);
 }

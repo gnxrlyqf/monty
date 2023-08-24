@@ -1,8 +1,4 @@
-#include "main.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
+#include "monty.h"
 
 instruction_t instructions[] = {
 	{"push", push},
@@ -11,32 +7,45 @@ instruction_t instructions[] = {
 	/*{"pop", pop},*/
 	/*{"swap", swap},*/
 	/*{"add", add},*/
-	/*{"nop", nop}*/
+	/*{"nop", nop},*/
+	{NULL, NULL}
 };
 
 int main(int ac, char **av)
 {
-	FILE *o;
-	int n, i;
-	char *buffer = malloc(sizeof(char) * 256), **arr = NULL;
+	FILE *fo;
+	size_t size = 256;
+	int n = 0, i;
+	char *buffer = malloc(sizeof(char) * 256), **arr = NULL, *read;
 	stack_t *stack = NULL;
 
 	if (ac != 2)
-		exit(97);
-	o = fopen(av[1], "r");
-	if (o == NULL)
-		exit(98);
-	if (fgets(buffer, 256, o) != NULL)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+	fo = fopen(av[1], "r");
+	if (!fo)
+	{
+
+		fprintf(stderr, "Error: Can't open file %s\n", av[1]);
+		exit(EXIT_FAILURE);
+	}
+	read = fgets(buffer, size, fo);
+	while (read)
 	{
 		arr = cmd(buffer);
-		n = atoi(arr[1]);
-		for (i = 0; i > 7; i++)
+		if (arr[1])
+			n = atoi(arr[1]);
+		for (i = 0; instructions[i].opcode; i++)
 		{
 			if (strcmp(arr[0], (instructions[i]).opcode) == 0)
 			{
 				(instructions[i]).f(&stack, (unsigned int)n);
+				break;
 			}
 		}
+		read = fgets(buffer, size, fo);
 	}
 	return (0);
 }
