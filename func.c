@@ -55,18 +55,6 @@ char **cmd(char *buffer)
 	return (cmd);
 }
 
-instruction_t instructions[] = {
-	{"push", push},
-	{"pall", pall},
-	/*
-	* {"pint", pint}
-	* {"pop", pop},
-	* {"swap", swap},
-	* {"add", add},
-	* {"nop", nop}
-	*/
-};
-
 /**
  * exec - executes an instruction
  * @arr: instruction to execute
@@ -77,6 +65,17 @@ instruction_t instructions[] = {
 void exec(char **arr, stack_t **stack, int line_num)
 {
 	int i = 0, n, found = 0;
+	instruction_t instructions[] = {
+		{"push", push},
+		{"pall", pall},
+		/*
+		* {"pint", pint}
+		* {"pop", pop},
+		* {"swap", swap},
+		* {"add", add},
+		* {"nop", nop}
+		*/
+	};
 
 	if (strcmp(arr[0], "push") == 0)
 	{
