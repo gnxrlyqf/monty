@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 /**
  * is_number - check the string is number
@@ -45,7 +46,10 @@ char **cmd(char *buffer)
 		return (NULL);
 	if (strlen(cmd[0]) == (unsigned long int)size)
 	{
-		cmd[0][size - 1] = '\0';
+		if (cmd[0][size - 1] == '\n')
+			cmd[0][size - 1] = '\0';
+		else
+			cmd[0][size] = '\0';
 		cmd[1] = NULL;
 		return (cmd);
 	}
