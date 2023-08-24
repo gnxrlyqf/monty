@@ -1,15 +1,30 @@
 #include "monty.h"
 
-instruction_t instructions[] = {
-	{"push", push},
-	{"pall", pall},
-	{"pint", pint},
-	/*{"pop", pop},*/
-	/*{"swap", swap},*/
-	/*{"add", add},*/
-	/*{"nop", nop},*/
-	{NULL, NULL}
-};
+
+/**
+ * get_inst - get the fonction of instruction
+ * @opc: opcode
+ * Return: opcode fonction
+ */
+void (*get_inst(char *opc))(stack_t **stack, unsigned int line_number)
+{
+	instruction_t instructions[] = {
+		{"push", push},
+		{"pall", pall},
+		{"pint", pint},
+		/*{"pop", pop},*/
+		/*{"swap", swap},*/
+		/*{"add", add},*/
+		/*{"nop", nop},*/
+		{NULL, NULL}
+	};
+	int i;
+
+	for (i = 0; instructions[i].opcode; i++)
+		if (strcmp(opc, (instructions[i]).opcode) == 0)
+			return (instructions[i].f);
+	return (NULL);
+}
 /**
  * free_stack - frees a stack_t list
  * @head: list head
@@ -37,6 +52,7 @@ void free_stack(stack_t *head)
  * openfile - open file if it's possible
  * @ac: args number
  * @av: array of args
+ * @buffer: buffer
  * Return: file
  */
 
@@ -69,8 +85,9 @@ FILE *openfile(int ac, char **av, char *buffer)
 int main(int ac, char **av)
 {
 	FILE *fo;
+	void (*f)(stack_t **stack, unsigned int line_number);
 	size_t size = 256;
-	int n = 0, i;
+	int n = 0;
 	char *buffer = malloc(sizeof(char) * 256), **arr = NULL, *read;
 	stack_t *stack = NULL;
 
@@ -83,13 +100,10 @@ int main(int ac, char **av)
 			arr = cmd(buffer);
 			if (arr[1])
 				n = atoi(arr[1]);
-			for (i = 0; instructions[i].opcode; i++)
+			if (f)
 			{
-				if (strcmp(arr[0], (instructions[i]).opcode) == 0)
-				{
-					(instructions[i]).f(&stack, (unsigned int)n);
-					break;
-				}
+				f = get_inst(arr[0]);
+				f(&stack, n);
 			}
 		}
 		read = fgets(buffer, size, fo);
