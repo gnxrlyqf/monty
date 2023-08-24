@@ -63,22 +63,21 @@ void exec(char **arr, stack_t **stack, int line_num)
 	instruction_t instructions[] = {
 		{"push", push},
 		{"pall", pall},
+		{"pint", pint},
+		{"pop", pop},
 		/*
-		* {"pint", pint}
-		* {"pop", pop},
 		* {"swap", swap},
 		* {"add", add},
 		* {"nop", nop}
 		*/
 	};
-
 	if (strcmp(arr[0], "push") == 0)
 	{
 		if (!arr[1] || is_number(arr[1]) != 1)
 			fprintf(stderr, "L%d: usage: push integer\n", line_num), exit(EXIT_FAILURE);
 		n = atoi(arr[1]);
 	}
-	for (i = 0; i < 2; i++)
+	for (i = 0; i < 4; i++)
 	{
 		if (strcmp(arr[0], instructions[i].opcode) == 0)
 		{

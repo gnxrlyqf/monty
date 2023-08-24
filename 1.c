@@ -82,3 +82,16 @@ void pint(stack_t **stack, __attribute__((unused)) unsigned int line_number)
 		exit(EXIT_FAILURE);
 	}
 }
+
+void pop(stack_t **stack, __attribute__((unused)) unsigned int line_number)
+{
+	stack_t *remove;
+
+	if (!(*stack))
+		exit(EXIT_FAILURE);
+	remove = *stack;
+	*stack = (*stack)->next;
+	(*stack)->prev = NULL;
+	free(remove);
+}
+
