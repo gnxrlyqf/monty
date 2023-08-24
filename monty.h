@@ -46,5 +46,6 @@ typedef struct instruction_s
 } instruction_t;
 
 char **cmd(char *buffer);
+void exec(char **arr, stack_t *stack, int line_num);
 
 #endif

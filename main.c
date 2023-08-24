@@ -1,31 +1,6 @@
 #include "monty.h"
 #define _GNU_SOURCE
 
-
-/**
- * get_inst - get the fonction of instruction
- * @opc: opcode
- * Return: opcode fonction
- */
-void (*get_inst(char *opc))(stack_t **stack, unsigned int line_number)
-{
-	instruction_t instructions[] = {
-		{"push", push},
-		{"pall", pall},
-		{"pint", pint},
-		/*{"pop", pop},*/
-		/*{"swap", swap},*/
-		/*{"add", add},*/
-		/*{"nop", nop},*/
-		{NULL, NULL}
-	};
-	int i;
-
-	for (i = 0; instructions[i].opcode; i++)
-		if (strcmp(opc, (instructions[i]).opcode) == 0)
-			return (instructions[i].f);
-	return (NULL);
-}
 /**
  * free_stack - frees a stack_t list
  * @head: list head
@@ -86,28 +61,22 @@ FILE *openfile(int ac, char **av, char *buffer)
 int main(int ac, char **av)
 {
 	FILE *fo;
-	void (*f)(stack_t **stack, unsigned int line_number);
 	size_t size = 256;
-	int n = 0;
+	int num = 1;
 	char *buffer = malloc(sizeof(char) * 256), **arr = NULL, *read;
 	stack_t *stack = NULL;
 
+	memset(buffer, '\0', 256);
 	fo = openfile(ac, av, buffer);
 	read = fgets(buffer, size, fo);
 	while (read)
 	{
-		if (strcmp("\n", read))
-		{
-			arr = cmd(buffer);
-			if (arr[1])
-				n = atoi(arr[1]);
-			if (f)
-			{
-				f = get_inst(arr[0]);
-				f(&stack, n);
-			}
-		}
-		read = fgets(buffer, size, fo);
+		if (strcmp("\n", read) == 0)
+			continue;
+		arr = cmd(buffer);
+		exec(arr, stack, num);
+		memset(buffer, '\0', 256);
+		num++;
 	}
 	free(buffer);
 	if (arr)
