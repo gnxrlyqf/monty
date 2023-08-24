@@ -10,7 +10,29 @@ instruction_t instructions[] = {
 	/*{"nop", nop},*/
 	{NULL, NULL}
 };
+/**
+ * free_stack - frees a stack_t list
+ * @head: list head
+ * Return: nothing
+ */
 
+void free_stack(stack_t *head)
+{
+	stack_t *temp;
+
+	if (head)
+	{
+		while (head->prev)
+			head = head->prev;
+		temp = head;
+		while (temp)
+		{
+			head = temp->next;
+			free(temp);
+			temp = head;
+		}
+	}
+}
 int main(int ac, char **av)
 {
 	FILE *fo;
@@ -22,30 +44,39 @@ int main(int ac, char **av)
 	if (ac != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
+		free(buffer);
 		exit(EXIT_FAILURE);
 	}
 	fo = fopen(av[1], "r");
 	if (!fo)
 	{
-
+		free(buffer);
 		fprintf(stderr, "Error: Can't open file %s\n", av[1]);
 		exit(EXIT_FAILURE);
 	}
 	read = fgets(buffer, size, fo);
 	while (read)
 	{
-		arr = cmd(buffer);
-		if (arr[1])
-			n = atoi(arr[1]);
-		for (i = 0; instructions[i].opcode; i++)
+		if (strcmp("\n", read))
 		{
-			if (strcmp(arr[0], (instructions[i]).opcode) == 0)
+			arr = cmd(buffer);
+			if (arr[1])
+				n = atoi(arr[1]);
+			for (i = 0; instructions[i].opcode; i++)
 			{
-				(instructions[i]).f(&stack, (unsigned int)n);
-				break;
+				if (strcmp(arr[0], (instructions[i]).opcode) == 0)
+				{
+					(instructions[i]).f(&stack, (unsigned int)n);
+					break;
+				}
 			}
 		}
 		read = fgets(buffer, size, fo);
 	}
+	free(buffer);
+	if (arr)
+		free(arr);
+	free_stack(stack);
+	fclose(fo);
 	return (0);
 }
