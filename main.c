@@ -1,4 +1,5 @@
 #include "monty.h"
+#define _GNU_SOURCE
 
 
 /**
