@@ -65,9 +65,9 @@ void exec(char **arr, stack_t **stack, int line_num)
 		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
+		{"add", add},
 		/*
 		* {"swap", swap},
-		* {"add", add},
 		* {"nop", nop}
 		*/
 	};
@@ -77,7 +77,7 @@ void exec(char **arr, stack_t **stack, int line_num)
 			fprintf(stderr, "L%d: usage: push integer\n", line_num), exit(EXIT_FAILURE);
 		n = atoi(arr[1]);
 	}
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < 5; i++)
 	{
 		if (strcmp(arr[0], instructions[i].opcode) == 0)
 		{

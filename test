@@ -6,5 +6,5 @@ push 54
 
          push 4       
 pall
-pop
+add
 pall

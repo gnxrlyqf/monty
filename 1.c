@@ -95,3 +95,15 @@ void pop(stack_t **stack, __attribute__((unused)) unsigned int line_number)
 	free(remove);
 }
 
+void add(stack_t **stack, __attribute__((unused)) unsigned int line_number)
+{
+	stack_t *remove;
+	if (!(*stack))
+		exit(EXIT_FAILURE);
+
+	(*stack)->next->n = (*stack)->n + (*stack)->next->n;
+	remove = *stack;
+	*stack = (*stack)->next;
+	(*stack)->prev = NULL;
+	free(remove);
+}
