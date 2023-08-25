@@ -1,5 +1,6 @@
 #include "monty.h"
 
+
 /**
  * add - adds the top two elements of the stack.
  * @stack: head stack
@@ -39,7 +40,6 @@ void nop(__attribute__((unused)) stack_t **stack,
 		__attribute__((unused)) unsigned int line_number)
 {
 }
-
 /**
  * sub - subtracts the top two elements of the stack.
  * @stack: head stack
@@ -90,7 +90,7 @@ void divide(stack_t **stack, unsigned int line_number)
 		fprintf(stderr, "L%d: division by 0", line_number);
 		_free();
 		exit(EXIT_FAILURE);
-	}	
+	}
 
 	while ((*stack)->next)
 		*stack = (*stack)->next;

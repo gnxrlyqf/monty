@@ -5,8 +5,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <fcntl.h>
-#include <ctype.h>
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -69,9 +67,9 @@ void mul(stack_t **stack, unsigned int line_number);
 void mod(stack_t **stack, unsigned int line_number);
 
 
-void (*get_inst(char *opc))(stack_t **stack, unsigned int line_number);
+void exec(int line_num);
 void free_stack(stack_t *head);
 void _free(void);
-void cmd(char *buffer, int line_num);
+void cmd(char *buffer);
 int is_number(char *s);
 #endif /* MONTY_H*/

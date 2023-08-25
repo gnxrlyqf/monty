@@ -52,9 +52,8 @@ FILE *openfile(int ac, char **av)
 int main(int ac, char **av)
 {
 	FILE *fo;
-	void (*f)(stack_t **stack, unsigned int line_number);
 	size_t size = 256;
-	int num = 1, n;
+	int num = 1;
 	char *read = NULL;
 
 	fo = openfile(ac, av);
@@ -62,26 +61,11 @@ int main(int ac, char **av)
 	read = fgets(v_glb.buffer, size, fo);
 	while (read)
 	{
-		cmd(v_glb.buffer, num);
+		cmd(v_glb.buffer);
 		if (strcmp(v_glb.cmd[0], "\0"))
-		{
-			f = get_inst(v_glb.cmd[0]);
-			if (f)
-			{
-				if (v_glb.cmd[1])
-					n = num, num = atoi(v_glb.cmd[1]), f(&v_glb.stack, num), num = n;
-				else
-					f(&v_glb.stack, num);
-			}
-			else
-			{
-				fprintf(stderr, "L%d: unknown instruction %s\n",
-						num, v_glb.cmd[0]);
-				_free();
-				exit(EXIT_FAILURE);
-			}
-		}
-		read = fgets(v_glb.buffer, size, fo), num++;
+			exec(num);
+		read = fgets(v_glb.buffer, size, fo);
+		num++;
 	}
 	_free();
 	return (0);
