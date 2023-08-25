@@ -40,3 +40,24 @@ void nop(__attribute__((unused)) stack_t **stack,
 		__attribute__((unused)) unsigned int line_number)
 {
 }
+
+void sub(stack_t **stack, unsigned int line_number)
+{
+	stack_t *remove;
+
+	if (!(*stack) || ((*stack)->next && (*stack)->prev))
+	{
+		fprintf(stderr, "L%d: can't sub, stack too short", line_number);
+		_free();
+		exit(EXIT_FAILURE);
+	}
+
+	while ((*stack)->next)
+		*stack = (*stack)->next;
+
+	(*stack)->prev->n = (*stack)->prev->n - (*stack)->n;
+	remove = *stack;
+	*stack = (*stack)->prev;
+	(*stack)->next = NULL;
+	free(remove);
+}
