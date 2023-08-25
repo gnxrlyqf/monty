@@ -40,6 +40,13 @@ void nop(__attribute__((unused)) stack_t **stack,
 {
 }
 
+/**
+ * sub - subtracts the top two elements of the stack.
+ * @stack: head stack
+ * @line_number: void
+ * Return: nothing
+ */
+
 void sub(stack_t **stack, unsigned int line_number)
 {
 	stack_t *remove;
@@ -60,6 +67,13 @@ void sub(stack_t **stack, unsigned int line_number)
 	(*stack)->next = NULL;
 	free(remove);
 }
+
+/**
+ * divide - divides the top two elements of the stack.
+ * @stack: head stack
+ * @line_number: void
+ * Return: nothing
+ */
 
 void divide(stack_t **stack, unsigned int line_number)
 {
@@ -87,6 +101,13 @@ void divide(stack_t **stack, unsigned int line_number)
 	(*stack)->next = NULL;
 	free(remove);
 }
+
+/**
+ * mul - multiplies the top two elements of the stack.
+ * @stack: head stack
+ * @line_number: void
+ * Return: nothing
+ */
 
 void mul(stack_t **stack, unsigned int line_number)
 {
