@@ -53,7 +53,7 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-extern var_g var_glb;
+extern var_g v_glb;
 
 
 void push(stack_t **stack, unsigned int line_number);
@@ -64,6 +64,9 @@ void swap(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, __attribute__((unused)) unsigned int line_number);
 void sub(stack_t **stack, unsigned int line_number);
+void divide(stack_t **stack, unsigned int line_number);
+void mul(stack_t **stack, unsigned int line_number);
+void mod(stack_t **stack, unsigned int line_number);
 
 
 void (*get_inst(char *opc))(stack_t **stack, unsigned int line_number);

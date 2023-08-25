@@ -39,12 +39,12 @@ void cmd(char *buffer, int line_num)
 	token = strtok(buffer, " \t\n");
 	while (token)
 	{
-		var_glb.cmd[i] = token;
+		v_glb.cmd[i] = token;
 		i++;
 		token = strtok(NULL, " \t\n");
 	}
-	var_glb.cmd[i] = "\0";
-	if (i >= 3 && !is_number(var_glb.cmd[1]))
+	v_glb.cmd[i] = "\0";
+	if (i >= 3 && !is_number(v_glb.cmd[1]))
 	{
 		fprintf(stderr, "L%d: usage: push integer\n", line_num);
 		_free();
@@ -68,6 +68,9 @@ void (*get_inst(char *opc))(stack_t **stack, unsigned int line_number)
 		{"add", add},
 		{"nop", nop},
 		{"sub", sub},
+		{"div", divide},
+		{"mul", mul},
+		{"mod", mod},
 		{NULL, NULL}
 	};
 	int i;

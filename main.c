@@ -1,5 +1,5 @@
 #include "monty.h"
-var_g var_glb;
+var_g v_glb;
 
 /**
  * set_start - initial global variables
@@ -9,10 +9,10 @@ var_g var_glb;
 
 void set_start(FILE *f)
 {
-	var_glb.stack = NULL;
-	var_glb.fd = f;
-	var_glb.buffer = malloc(sizeof(char) * 256);
-	var_glb.cmd = malloc(256);
+	v_glb.stack = NULL;
+	v_glb.fd = f;
+	v_glb.buffer = malloc(sizeof(char) * 256);
+	v_glb.cmd = malloc(256);
 }
 /**
  * openfile - open file if it's possible
@@ -28,15 +28,15 @@ FILE *openfile(int ac, char **av)
 	if (ac != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
-		free(var_glb.buffer);
-		free(var_glb.cmd);
+		free(v_glb.buffer);
+		free(v_glb.cmd);
 		exit(EXIT_FAILURE);
 	}
 	o = fopen(av[1], "r");
 	if (!o)
 	{
-		free(var_glb.buffer);
-		free(var_glb.cmd);
+		free(v_glb.buffer);
+		free(v_glb.cmd);
 		fprintf(stderr, "Error: Can't open file %s\n", av[1]);
 		exit(EXIT_FAILURE);
 	}
@@ -59,35 +59,29 @@ int main(int ac, char **av)
 
 	fo = openfile(ac, av);
 	set_start(fo);
-	read = fgets(var_glb.buffer, size, fo);
+	read = fgets(v_glb.buffer, size, fo);
 	while (read)
 	{
-		cmd(var_glb.buffer, num);
-		if (strcmp(var_glb.cmd[0], "\0"))
+		cmd(v_glb.buffer, num);
+		if (strcmp(v_glb.cmd[0], "\0"))
 		{
-			f = get_inst(var_glb.cmd[0]);
+			f = get_inst(v_glb.cmd[0]);
 			if (f)
 			{
-				if (var_glb.cmd[1])
-				{
-					n = num;
-					num = atoi(var_glb.cmd[1]);
-					f(&var_glb.stack, num);
-					num = n;
-				}
+				if (v_glb.cmd[1])
+					n = num, num = atoi(v_glb.cmd[1]), f(&v_glb.stack, num), num = n;
 				else
-					f(&var_glb.stack, num);
+					f(&v_glb.stack, num);
 			}
 			else
 			{
 				fprintf(stderr, "L%d: unknown instruction %s\n",
-						num, var_glb.cmd[0]);
+						num, v_glb.cmd[0]);
 				_free();
 				exit(EXIT_FAILURE);
 			}
 		}
-		read = fgets(var_glb.buffer, size, fo);
-		num++;
+		read = fgets(v_glb.buffer, size, fo), num++;
 	}
 	_free();
 	return (0);

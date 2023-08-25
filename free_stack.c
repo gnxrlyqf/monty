@@ -29,8 +29,8 @@ void free_stack(stack_t *head)
  */
 void _free(void)
 {
-	free(var_glb.buffer);
-	free(var_glb.cmd);
-	free_stack(var_glb.stack);
-	fclose(var_glb.fd);
+	free(v_glb.buffer);
+	free(v_glb.cmd);
+	free_stack(v_glb.stack);
+	fclose(v_glb.fd);
 }
