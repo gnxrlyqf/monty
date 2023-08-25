@@ -1,5 +1,4 @@
 #include "monty.h"
-
 var_g var_glb;
 
 /**

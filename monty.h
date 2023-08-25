@@ -1,17 +1,12 @@
 #ifndef MONTY_H
 #define MONTY_H
-
-
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
 #include <ctype.h>
-
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -23,18 +18,11 @@
  */
 typedef struct stack_s
 {
-	int n;
-	struct stack_s *prev;
-	struct stack_s *next;
+        int n;
+        struct stack_s *prev;
+        struct stack_s *next;
 } stack_t;
 
-void push(stack_t **stack, unsigned int line_number);
-void pall(stack_t **stack, unsigned int line_number);
-void pint(stack_t **stack, unsigned int line_number);
-void pop(stack_t **stack, unsigned int line_number);
-void swap(stack_t **stack, unsigned int line_number);
-void add(stack_t **stack, unsigned int line_number);
-void nop(stack_t **stack, unsigned int line_number);
 
 /**
  * struct var_global - global structure
@@ -51,8 +39,6 @@ typedef struct var_global
 	char *buffer;
 	char **cmd;
 } var_g;
-
-extern var_g var_glb;
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -67,9 +53,21 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+extern var_g var_glb;
+
+
+void push(stack_t **stack, unsigned int line_number);
+void pall(stack_t **stack, __attribute__((unused)) unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void pop(stack_t **stack, unsigned int line_number);
+void swap(stack_t **stack, unsigned int line_number);
+void add(stack_t **stack, unsigned int line_number);
+void nop(stack_t **stack, __attribute__((unused)) unsigned int line_number);
+
+
 void (*get_inst(char *opc))(stack_t **stack, unsigned int line_number);
 void free_stack(stack_t *head);
 void _free(void);
 void cmd(char *buffer, int line_num);
 int is_number(char *s);
-#endif
+#endif /* MONTY_H*/
