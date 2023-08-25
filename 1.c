@@ -8,11 +8,12 @@
 
 void push(stack_t **stack, unsigned int line_number)
 {
-	stack_t *elem = malloc(sizeof(stack_t)), *temp;
+	stack_t *elem = malloc(sizeof(stack_t)), *temp = NULL;
 
 	if (!elem)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
+		_free();
 		exit(EXIT_FAILURE);
 	}
 
@@ -43,7 +44,7 @@ void push(stack_t **stack, unsigned int line_number)
 
 void pall(stack_t **stack, __attribute__((unused)) unsigned int line_number)
 {
-	stack_t *current;
+	stack_t *current = NULL;
 
 	if (*stack)
 	{
@@ -78,32 +79,62 @@ void pint(stack_t **stack, __attribute__((unused)) unsigned int line_number)
 	}
 	else
 	{
-		fprintf(stderr, "L<line_number>: can't pint, stack empty\n");
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+		_free();
 		exit(EXIT_FAILURE);
 	}
+
+}
+/**
+ * swap - swaps the top two elements of the stack.
+ * @stack: head stack
+ * @line_number: void
+ * Return: nothing
+ */
+
+void swap(stack_t **stack, unsigned int line_number)
+{
+	stack_t *temp, *tempt;
+
+	if (!*stack || (!(*stack)->next && !(*stack)->prev))
+	{
+		_free();
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	temp = *stack;
+	while (temp->next)
+		temp = temp->next;
+	tempt = temp->prev;
+	temp->prev = tempt->prev;
+	tempt->next = NULL;
+	temp->next = tempt;
+	tempt->prev = temp;
+	temp->prev->next = temp;
 }
 
-void pop(stack_t **stack, __attribute__((unused)) unsigned int line_number)
+/**
+ * pop - removes the top element of the stack.
+ * @stack: head stack
+ * @line_number: void
+ * Return: nothing
+ */
+
+void pop(stack_t **stack, unsigned int line_number)
 {
 	stack_t *remove;
 
 	if (!(*stack))
+	{
+		_free();
+		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
 		exit(EXIT_FAILURE);
+	}
+	while ((*stack)->next)
+		*stack = (*stack)->next;
 	remove = *stack;
-	*stack = (*stack)->next;
-	(*stack)->prev = NULL;
+	*stack = (*stack)->prev;
+	(*stack)->next = NULL;
 	free(remove);
 }
 
-void add(stack_t **stack, __attribute__((unused)) unsigned int line_number)
-{
-	stack_t *remove;
-	if (!(*stack))
-		exit(EXIT_FAILURE);
-
-	(*stack)->next->n = (*stack)->n + (*stack)->next->n;
-	remove = *stack;
-	*stack = (*stack)->next;
-	(*stack)->prev = NULL;
-	free(remove);
-}

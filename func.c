@@ -27,68 +27,52 @@ int is_number(char *s)
 /**
  * cmd - creates command out of buffer
  * @buffer: text to convert
- *
- * Return: array of strings with command and number
+ * @line_num: line number
+ * Return: nothing
 */
 
-char **cmd(char *buffer)
+void cmd(char *buffer, int line_num)
 {
+	char *token = NULL;
 	int i = 0;
-	char **cmd = malloc(sizeof(char *) * 2);
 
-	while (buffer[i] != '\0')
+	token = strtok(buffer, " \t\n");
+	while (token)
+	{
+		var_glb.cmd[i] = token;
 		i++;
-	/*size = i;*/
-	cmd[0] = strtok(buffer, " \0\n");
-	if (cmd[0][strlen(cmd[0]) - 1] == '\n')
-		cmd[0][strlen(cmd[0]) - 1] = '\0';
-	if (!cmd[0])
-		return (NULL);
-	cmd[1] = strtok(NULL, " \0\n");
-	if (cmd[1] && cmd[1][strlen(cmd[1]) - 1] == '\n')
-		cmd[1][strlen(cmd[1]) - 1] = '\0';
-	return (cmd);
+		token = strtok(NULL, " \t\n");
+	}
+	var_glb.cmd[i] = "\0";
+	if (i >= 3 && !is_number(var_glb.cmd[1]))
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", line_num);
+		_free();
+		exit(EXIT_FAILURE);
+	}
 }
 
 /**
- * exec - executes an instruction
- * @arr: instruction to execute
- * @stack: pointer to pointer to the top of the stack
- * @line_num: line number
-*/
-
-void exec(char **arr, stack_t **stack, int line_num)
+ * get_inst - get the fonction of instruction
+ * @opc: opcode
+ * Return: opcode fonction
+ */
+void (*get_inst(char *opc))(stack_t **stack, unsigned int line_number)
 {
-	int i = 0, n, found = 0;
 	instruction_t instructions[] = {
 		{"push", push},
 		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
+		{"swap", swap},
 		{"add", add},
-		/*
-		* {"swap", swap},
-		* {"nop", nop}
-		*/
+		{"nop", nop},
+		{NULL, NULL}
 	};
-	if (strcmp(arr[0], "push") == 0)
-	{
-		if (!arr[1] || is_number(arr[1]) != 1)
-			fprintf(stderr, "L%d: usage: push integer\n", line_num), exit(EXIT_FAILURE);
-		n = atoi(arr[1]);
-	}
-	for (i = 0; i < 5; i++)
-	{
-		if (strcmp(arr[0], instructions[i].opcode) == 0)
-		{
-			(instructions[i]).f(stack, (unsigned int)n);
-			found = 1;
-			break;
-		}
-	}
-	if (!found)
-	{
-		fprintf(stderr, "L%d: unknown instruction %s\n", line_num, arr[0]);
-		exit(EXIT_FAILURE);
-	}
+	int i;
+
+	for (i = 0; instructions[i].opcode; i++)
+		if (strcmp(opc, (instructions[i]).opcode) == 0)
+			return (instructions[i].f);
+	return (NULL);
 }

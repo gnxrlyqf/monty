@@ -1,51 +1,43 @@
 #include "monty.h"
-#define _GNU_SOURCE
+
+var_g var_glb;
 
 /**
- * free_stack - frees a stack_t list
- * @head: list head
+ * set_start - initial global variables
+ * @f: file discr
  * Return: nothing
  */
 
-void free_stack(stack_t *head)
+void set_start(FILE *f)
 {
-	stack_t *temp;
-
-	if (head)
-	{
-		while (head->prev)
-			head = head->prev;
-		temp = head;
-		while (temp)
-		{
-			head = temp->next;
-			free(temp);
-			temp = head;
-		}
-	}
+	var_glb.stack = NULL;
+	var_glb.fd = f;
+	var_glb.buffer = malloc(sizeof(char) * 256);
+	var_glb.cmd = malloc(256);
 }
 /**
  * openfile - open file if it's possible
  * @ac: args number
  * @av: array of args
- * @buffer: buffer
  * Return: file
  */
 
-FILE *openfile(int ac, char **av, char *buffer)
+FILE *openfile(int ac, char **av)
 {
 	FILE *o;
 
 	if (ac != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
-		free(buffer);
+		free(var_glb.buffer);
+		free(var_glb.cmd);
 		exit(EXIT_FAILURE);
 	}
 	o = fopen(av[1], "r");
 	if (!o)
 	{
-		free(buffer);
+		free(var_glb.buffer);
+		free(var_glb.cmd);
 		fprintf(stderr, "Error: Can't open file %s\n", av[1]);
 		exit(EXIT_FAILURE);
 	}
@@ -61,29 +53,43 @@ FILE *openfile(int ac, char **av, char *buffer)
 int main(int ac, char **av)
 {
 	FILE *fo;
+	void (*f)(stack_t **stack, unsigned int line_number);
 	size_t size = 256;
-	int num = 1;
-	char *buffer = malloc(sizeof(char) * 256), **arr = NULL;
-	stack_t *stack = NULL;
+	int num = 1, n;
+	char *read = NULL;
 
-	memset(buffer, '\0', 256);
-	fo = openfile(ac, av, buffer);
-	while (fgets(buffer, size, fo))
+	fo = openfile(ac, av);
+	set_start(fo);
+	read = fgets(var_glb.buffer, size, fo);
+	while (read)
 	{
-		if (strcmp("\n", buffer) == 0)
+		cmd(var_glb.buffer, num);
+		if (strcmp(var_glb.cmd[0], "\0"))
 		{
-			num++;
-			continue;
+			f = get_inst(var_glb.cmd[0]);
+			if (f)
+			{
+				if (var_glb.cmd[1])
+				{
+					n = num;
+					num = atoi(var_glb.cmd[1]);
+					f(&var_glb.stack, num);
+					num = n;
+				}
+				else
+					f(&var_glb.stack, num);
+			}
+			else
+			{
+				fprintf(stderr, "L%d: unknown instruction %s\n",
+						num, var_glb.cmd[0]);
+				_free();
+				exit(EXIT_FAILURE);
+			}
 		}
-		arr = cmd(buffer);
-		exec(arr, &stack, num);
-		memset(buffer, '\0', 256);
+		read = fgets(var_glb.buffer, size, fo);
 		num++;
 	}
-	free(buffer);
-	if (arr)
-		free(arr);
-	free_stack(stack);
-	fclose(fo);
+	_free();
 	return (0);
 }
