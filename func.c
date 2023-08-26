@@ -54,7 +54,7 @@ void exec(int line_num)
 		{"pint", pint}, {"pop", pop}, {"swap", swap}, {"add", add},
 		{"nop", nop}, {"sub", sub}, {"div", divide}, {"mul", mul},
 		{"mod", mod}, {"pchar", pchar}, {"pstr", pstr}, {"rotl", rotl},
-		{"rotr", rotr}, {NULL, NULL}};
+		{"rotr", rotr}, {"stack", stack}, {"queue", queue}, {NULL, NULL}};
 
 	int i, n, found = 0;
 

@@ -10,9 +10,11 @@
  */
 void stack(stack_t **stack, unsigned int line_number)
 {
-
 	(void) **stack;
 	(void) line_number;
+
+	if (!v_glb.lifo)
+		v_glb.lifo = 1;
 }
 
 
@@ -29,4 +31,5 @@ void queue(stack_t **stack, unsigned int line_number)
 
 	if (v_glb.lifo)
 		v_glb.lifo = 0;
+
 }

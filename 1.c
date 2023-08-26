@@ -27,12 +27,24 @@ void push(stack_t **stack, unsigned int line_number)
 	}
 	else
 	{
-		while ((*stack)->next)
-			*stack = (*stack)->next;
-		temp = *stack;
-		elem->next = temp->next;
-		elem->prev = temp;
-		temp->next = elem;
+		if (!v_glb.lifo)
+		{
+			while ((*stack)->prev)
+				*stack = (*stack)->prev;
+			temp = *stack;
+			elem->next = temp;
+			temp->prev = elem;
+			elem->prev = NULL;
+		}
+		else
+		{
+			while ((*stack)->next)
+				*stack = (*stack)->next;
+			temp = *stack;
+			elem->next = temp->next;
+			elem->prev = temp;
+			temp->next = elem;
+		}
 		*stack = elem;
 	}
 }
