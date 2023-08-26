@@ -1,5 +1,13 @@
 #include "monty.h"
 
+/**
+ * mod - computes the rest of the division
+ * of the second top element of the stack by
+ * the top element of the stack.
+ * @stack: head stack
+ * @line_number: void
+ * Return: nothing
+ */
 void mod(stack_t **stack, unsigned int line_number)
 {
 	stack_t *remove;
@@ -15,7 +23,7 @@ void mod(stack_t **stack, unsigned int line_number)
 		fprintf(stderr, "L%d: division by 0", line_number);
 		_free();
 		exit(EXIT_FAILURE);
-	}	
+	}
 
 	while ((*stack)->next)
 		*stack = (*stack)->next;

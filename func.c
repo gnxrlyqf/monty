@@ -46,42 +46,35 @@ void cmd(char *buffer)
 
 /**
  * exec - executes an instruction
- * @arr: instruction to execute
- * @stack: pointer to pointer to the top of the stack
  * @line_num: line number
 */
 void exec(int line_num)
 {
-	instruction_t instructions[] = {
-		{"push", push},
-		{"pall", pall},
-		{"pint", pint},
-		{"pop", pop},
-		{"swap", swap},
-		{"add", add},
-		{"nop", nop},
-		{"sub", sub},
-		{"div", divide},
-		{"mul", mul},
-		{"mod", mod},
-		{NULL, NULL}
-	};
+	instruction_t instructions[] = {{"push", push}, {"pall", pall},
+		{"pint", pint}, {"pop", pop}, {"swap", swap}, {"add", add},
+		{"nop", nop}, {"sub", sub}, {"div", divide}, {"mul", mul},
+		{"mod", mod}, {NULL, NULL}};
 	int i, n, found = 0;
 
-	if (strcmp(v_glb.cmd[0], "push") == 0)
-	{
-		if (!v_glb.cmd[1] || is_number(v_glb.cmd[1]) != 1)
-		{
-			_free();
-			fprintf(stderr, "L%d: usage: push integer\n", line_num);
-			exit(EXIT_FAILURE);
-		}
-		n = atoi(v_glb.cmd[1]);
-	}
 	for (i = 0; instructions[i].opcode; i++)
 		if (strcmp(v_glb.cmd[0], (instructions[i]).opcode) == 0)
 		{
-			(instructions[i]).f(&v_glb.stack, (unsigned int)n);
+			if (strcmp(v_glb.cmd[0], "push") == 0)
+			{
+				if (!v_glb.cmd[1] || is_number(v_glb.cmd[1]) != 1)
+				{
+					_free();
+					fprintf(stderr, "L%d: usage: push integer\n",
+							line_num);
+					exit(EXIT_FAILURE);
+				}
+				n = atoi(v_glb.cmd[1]);
+				(instructions[i]).f(&v_glb.stack,
+						(unsigned int)n);
+			}
+			else
+				(instructions[i]).f(&v_glb.stack,
+						(unsigned int)line_num);
 			found = 1;
 			break;
 		}

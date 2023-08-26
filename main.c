@@ -12,7 +12,19 @@ void set_start(FILE *f)
 	v_glb.stack = NULL;
 	v_glb.fd = f;
 	v_glb.buffer = malloc(sizeof(char) * 256);
+	if (!v_glb.buffer)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		_free();
+		exit(EXIT_FAILURE);
+	}
 	v_glb.cmd = malloc(256);
+	if (!v_glb.cmd)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		_free();
+		exit(EXIT_FAILURE);
+	}
 }
 /**
  * openfile - open file if it's possible

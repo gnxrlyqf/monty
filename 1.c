@@ -27,12 +27,13 @@ void push(stack_t **stack, unsigned int line_number)
 	}
 	else
 	{
+		while ((*stack)->next)
+			*stack = (*stack)->next;
 		temp = *stack;
-		while (temp->next)
-			temp = temp->next;
 		elem->next = temp->next;
 		elem->prev = temp;
 		temp->next = elem;
+		*stack = elem;
 	}
 }
 /**
@@ -102,15 +103,17 @@ void swap(stack_t **stack, unsigned int line_number)
 		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
+	while ((*stack)->next)
+		*stack = (*stack)->next;
 	temp = *stack;
-	while (temp->next)
-		temp = temp->next;
 	tempt = temp->prev;
 	temp->prev = tempt->prev;
 	tempt->next = NULL;
 	temp->next = tempt;
 	tempt->prev = temp;
-	temp->prev->next = temp;
+	if (temp->prev)
+		temp->prev->next = temp;
+	*stack = tempt;
 }
 
 /**
