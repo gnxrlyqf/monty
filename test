@@ -1,4 +1,3 @@
-push 12
+push 98
 push 0
-div
-pall
+mod
