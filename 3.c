@@ -14,7 +14,7 @@ void mod(stack_t **stack, unsigned int line_number)
 
 	if (!(*stack) || ((*stack)->next && (*stack)->prev))
 	{
-		fprintf(stderr, "L%d: can't div, stack too short", line_number);
+		fprintf(stderr, "L%d: can't div, stack too short\n", line_number);
 		_free();
 		exit(EXIT_FAILURE);
 	}
