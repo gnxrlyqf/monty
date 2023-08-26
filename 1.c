@@ -136,8 +136,13 @@ void pop(stack_t **stack, unsigned int line_number)
 	while ((*stack)->next)
 		*stack = (*stack)->next;
 	remove = *stack;
-	*stack = (*stack)->prev;
-	(*stack)->next = NULL;
+	if (!remove->prev)
+		*stack = NULL;
+	else
+	{
+		*stack = (*stack)->prev;
+		(*stack)->next = NULL;
+	}
 	free(remove);
 }
 
