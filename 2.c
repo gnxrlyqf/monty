@@ -87,7 +87,7 @@ void divide(stack_t **stack, unsigned int line_number)
 	}
 	if ((*stack)->n == 0)
 	{
-		fprintf(stderr, "L%d: division by 0\n", line_number);
+		fprintf(stderr, "L%d: division by zero\n", line_number);
 		_free();
 		exit(EXIT_FAILURE);
 	}
