@@ -53,7 +53,9 @@ void exec(int line_num)
 	instruction_t instructions[] = {{"push", push}, {"pall", pall},
 		{"pint", pint}, {"pop", pop}, {"swap", swap}, {"add", add},
 		{"nop", nop}, {"sub", sub}, {"div", divide}, {"mul", mul},
-		{"mod", mod}, {"pchar", pchar}, {NULL, NULL}};
+		{"mod", mod}, {"pchar", pchar}, {"pstr", pstr}, {"rotl", rotl},
+		{"rotr", rotr}, {NULL, NULL}};
+
 	int i, n, found = 0;
 
 	for (i = 0; instructions[i].opcode; i++)

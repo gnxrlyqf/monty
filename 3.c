@@ -53,8 +53,77 @@ void pchar(stack_t **stack, unsigned int line_number)
 		printf("%c\n", (*stack)->n);
 	else
 	{
-		fprintf(stderr, "L%d: can't pchar, value out of range\n", line_number);
+		fprintf(stderr, "L%d: can't pchar, value out of range\n",
+				line_number);
 		exit(EXIT_FAILURE);
 	}
+}
 
+/**
+ * pstr - prints the string starting at the top of the stack
+ * @stack: head stack
+ * @line_number: line number
+ * Return: nothing
+ */
+void pstr(stack_t **stack, unsigned int line_number)
+{
+	stack_t *temp;
+	(void) line_number;
+
+	temp = *stack;
+	while (temp && temp->n <= 127 && temp->n > 0)
+	{
+		printf("%c", temp->n);
+		temp = temp->prev;
+	}
+	printf("\n");
+}
+
+/**
+ * rotl - rotates the stack to the top
+ * @stack: head stack
+ * @line_number: line number
+ * Return: nothing
+ */
+void rotl(stack_t **stack, unsigned int line_number)
+{
+	stack_t *temp, *tempt;
+	(void) line_number;
+
+	if (*stack && (*stack)->prev)
+	{
+		temp = *stack;
+		tempt = *stack;
+		while (temp->prev)
+			temp = temp->prev;
+		*stack = (*stack)->prev;
+		tempt->next = temp;
+		temp->prev = tempt;
+		tempt->prev = NULL;
+		(*stack)->next = NULL;
+	}
+}
+/**
+ * rotr - rotates the stack to the bottom
+ * @stack: head stack
+ * @line_number: line number
+ * Return: nothing
+ */
+void rotr(stack_t **stack, unsigned int line_number)
+{
+	stack_t *temp, *tempt;
+	(void) line_number;
+
+	if (*stack && (*stack)->prev)
+	{
+		temp = *stack;
+		tempt = *stack;
+		while (temp->prev)
+			temp = temp->prev;
+		temp->prev = tempt;
+		tempt->next = temp;
+		temp->next->prev = NULL;
+		temp->next = NULL;
+		*stack = temp;
+	}
 }

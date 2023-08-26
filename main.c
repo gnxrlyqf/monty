@@ -9,6 +9,7 @@ var_g v_glb;
 
 void set_start(FILE *f)
 {
+	v_glb.lifo = 1;
 	v_glb.stack = NULL;
 	v_glb.fd = f;
 	v_glb.buffer = malloc(sizeof(char) * 256);
