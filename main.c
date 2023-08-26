@@ -74,7 +74,7 @@ int main(int ac, char **av)
 	while (read)
 	{
 		cmd(v_glb.buffer);
-		if (strcmp(v_glb.cmd[0], "\0"))
+		if (strcmp(v_glb.cmd[0], "\0") && strncmp(v_glb.cmd[0], "#", 1))
 			exec(num);
 		read = fgets(v_glb.buffer, size, fo);
 		num++;
