@@ -53,7 +53,7 @@ void sub(stack_t **stack, unsigned int line_number)
 
 	if (!(*stack) || ((*stack)->next && (*stack)->prev))
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short", line_number);
+		fprintf(stderr, "L%d: can't sub, stack too short\n", line_number);
 		_free();
 		exit(EXIT_FAILURE);
 	}
@@ -81,7 +81,7 @@ void divide(stack_t **stack, unsigned int line_number)
 
 	if (!(*stack) || ((*stack)->next && (*stack)->prev))
 	{
-		fprintf(stderr, "L%d: can't div, stack too short", line_number);
+		fprintf(stderr, "L%d: can't div, stack too short\n", line_number);
 		_free();
 		exit(EXIT_FAILURE);
 	}
@@ -115,7 +115,7 @@ void mul(stack_t **stack, unsigned int line_number)
 
 	if (!(*stack) || ((*stack)->next && (*stack)->prev))
 	{
-		fprintf(stderr, "L%d: can't mul, stack too short", line_number);
+		fprintf(stderr, "L%d: can't mul, stack too short\n", line_number);
 		_free();
 		exit(EXIT_FAILURE);
 	}
