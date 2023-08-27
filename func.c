@@ -63,7 +63,7 @@ void exec(int line_num)
 		{
 			if (strcmp(v_glb.cmd[0], "push") == 0)
 			{
-				if (!v_glb.cmd[1] || is_number(v_glb.cmd[1]) != 1)
+				if (!is_number(v_glb.cmd[1]) || !strcmp(v_glb.cmd[1], "\0"))
 				{
 					_free();
 					fprintf(stderr, "L%d: usage: push integer\n",
