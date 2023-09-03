@@ -46,16 +46,26 @@ void cmd(char *buffer)
 
 /**
  * exec - executes an instruction
+ * @arr: instruction to execute
+ * @stack: pointer to pointer to the top of the stack
  * @line_num: line number
 */
 void exec(int line_num)
 {
-	instruction_t instructions[] = {{"push", push}, {"pall", pall},
-		{"pint", pint}, {"pop", pop}, {"swap", swap}, {"add", add},
-		{"nop", nop}, {"sub", sub}, {"div", divide}, {"mul", mul},
-		{"mod", mod}, {"pchar", pchar}, {"pstr", pstr}, {"rotl", rotl},
-		{"rotr", rotr}, {"stack", stack}, {"queue", queue}, {NULL, NULL}};
-
+	instruction_t instructions[] = {
+		{"push", push},
+		{"pall", pall},
+		{"pint", pint},
+		{"pop", pop},
+		{"swap", swap},
+		{"add", add},
+		{"nop", nop},
+		{"sub", sub},
+		{"div", divide},
+		{"mul", mul},
+		{"mod", mod},
+		{NULL, NULL}
+	};
 	int i, n, found = 0;
 
 	for (i = 0; instructions[i].opcode; i++)
@@ -63,7 +73,7 @@ void exec(int line_num)
 		{
 			if (strcmp(v_glb.cmd[0], "push") == 0)
 			{
-				if (!is_number(v_glb.cmd[1]) || !strcmp(v_glb.cmd[1], "\0"))
+				if (!v_glb.cmd[1] || is_number(v_glb.cmd[1]) != 1)
 				{
 					_free();
 					fprintf(stderr, "L%d: usage: push integer\n",

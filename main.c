@@ -9,7 +9,6 @@ var_g v_glb;
 
 void set_start(FILE *f)
 {
-	v_glb.lifo = 1;
 	v_glb.stack = NULL;
 	v_glb.fd = f;
 	v_glb.buffer = malloc(sizeof(char) * 256);
@@ -75,7 +74,7 @@ int main(int ac, char **av)
 	while (read)
 	{
 		cmd(v_glb.buffer);
-		if (strcmp(v_glb.cmd[0], "\0") && strncmp(v_glb.cmd[0], "#", 1))
+		if (strcmp(v_glb.cmd[0], "\0"))
 			exec(num);
 		read = fgets(v_glb.buffer, size, fo);
 		num++;

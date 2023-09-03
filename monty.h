@@ -16,15 +16,14 @@
  */
 typedef struct stack_s
 {
-	int n;
-	struct stack_s *prev;
-	struct stack_s *next;
+        int n;
+        struct stack_s *prev;
+        struct stack_s *next;
 } stack_t;
 
 
 /**
  * struct var_global - global structure
- * @lifo: swich betwin stack an queue mode
  * @stack: head of doubly linked list
  * @fd: file descriptor
  * @buffer: buffer
@@ -33,7 +32,6 @@ typedef struct stack_s
  */
 typedef struct var_global
 {
-	int lifo;
 	stack_t *stack;
 	FILE *fd;
 	char *buffer;
@@ -68,12 +66,6 @@ void divide(stack_t **stack, unsigned int line_number);
 void mul(stack_t **stack, unsigned int line_number);
 void mod(stack_t **stack, unsigned int line_number);
 
-void pchar(stack_t **stack, unsigned int line_number);
-void pstr(stack_t **stack, unsigned int line_number);
-void rotl(stack_t **stack, unsigned int line_number);
-void rotr(stack_t **stack, unsigned int line_number);
-void stack(stack_t **stack, unsigned int line_number);
-void queue(stack_t **stack, unsigned int line_number);
 
 void exec(int line_num);
 void free_stack(stack_t *head);
